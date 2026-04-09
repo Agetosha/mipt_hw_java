@@ -7,8 +7,14 @@ import org.junit.jupiter.api.Assertions;
 
 public class ReverseTest {
 
-    private static int[] reverse(int[] nums) {
-        return nums;
+    private static int[] reverse(int[] input) {
+    int[] result = input.clone();
+    for (int i = 0; i < result.length / 2; i++) {
+        int temp = result[i];
+        result[i] = result[result.length - 1 - i];
+        result[result.length - 1 - i] = temp;
+    }
+    return result;
     }
 
 
