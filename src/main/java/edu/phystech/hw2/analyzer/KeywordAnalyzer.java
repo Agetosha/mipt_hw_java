@@ -1,19 +1,19 @@
 package edu.phystech.hw2.analyzer;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class KeywordAnalyzer implements TextAnalyzer {
-
-    private final List<String> keywords;
-    private final Label label;
-
-    public KeywordAnalyzer(List<String> keywords, Label label) {
-        this.keywords = keywords;
-        this.label = label;
-    }
+    protected abstract Collection<String> getKeywords();
+    
+    protected abstract Label getLabel();
 
     @Override
     public Label processText(String text) {
-        return null;
+        for (String keyword : getKeywords()) {
+            if (text.contains(keyword)) {
+                return getLabel();
+            }
+        }
+        return Label.OK;
     }
 }
