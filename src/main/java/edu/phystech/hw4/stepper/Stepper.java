@@ -6,7 +6,6 @@ import java.util.List;
 /**
  * @author kzlv4natoly
  */
-
 public class Stepper {
 
     public enum Side {
@@ -17,11 +16,41 @@ public class Stepper {
     private final Object lock = new Object();
     private boolean isLeftTurn = true;
 
-    public void leftStep() {}
+    public void leftStep() {
+        synchronized (lock) {
+            while (!isLeftTurn) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+            history.add(Side.LEFT);
+            isLeftTurn = false;
+            lock.notifyAll();
+        }
+    }
 
-    public void rightStep()  {}
+    public void rightStep() {
+        synchronized (lock) {
+            while (isLeftTurn) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+            history.add(Side.RIGHT);
+            isLeftTurn = true;
+            lock.notifyAll();
+        }
+    }
 
     public List<Side> getHistory() {
-        return history;
+        synchronized (lock) {
+            return new ArrayList<>(history);
+        }
     }
 }
