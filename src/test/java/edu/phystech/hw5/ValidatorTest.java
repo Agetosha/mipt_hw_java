@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ValidatorTest {
 
-    private Validator validator = object -> {
-    };
+    private Validator validator = new Validator() {};
 
     @Test
     void notBlankWorks() {
@@ -58,5 +57,4 @@ public class ValidatorTest {
         Assertions.assertEquals("Long live Saint Petersburg!", exception.getMessage());
         Assertions.assertThrows(ValidationException.class, () -> validator.validate(new Example("", "0000000000000")));
     }
-
 }
