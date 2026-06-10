@@ -1,15 +1,23 @@
 package edu.phystech.hw2.contact;
 
-
-record Contact(String username, String email) {
+public record Contact(String username, String email) implements Comparable<Contact> {
     public static final String UNKNOWN_EMAIL = "unknown";
 
-    Contact {
-        // здесь должна быть валидация
+    public Contact {
+        if (username == null || username.trim().isEmpty()) {
+            throw new InvalidContactFieldException("username");
+        }
+        if (email == null || (!email.equals(UNKNOWN_EMAIL) && !email.endsWith("@gmail.com"))) {
+            throw new InvalidContactFieldException("email");
+        }
     }
 
-    Contact(String username) { this(null, null); }
+    public Contact(String username) {
+        this(username, UNKNOWN_EMAIL);
+    }
 
-
-    public int compareTo(Contact o) {return 0;}
+    @Override
+    public int compareTo(Contact other) {
+        return Integer.compare(this.username.length(), other.username().length());
+    }
 }

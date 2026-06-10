@@ -1,12 +1,18 @@
 package edu.phystech.hw2.analyzer;
 
-
+import java.util.Collection;
 import java.util.List;
 
 public class NegativeTextAnalyzer extends KeywordAnalyzer {
-    private static final List<String> NEGATIVE_SMILES = List.of(":(", "=(", ":|");
+    private final List<String> keywords = List.of(":(", "=(", ":|");
 
-    public NegativeTextAnalyzer() {
-        super(null, null);
+    @Override
+    protected Collection<String> getKeywords() { 
+        return keywords; 
+    }
+
+    @Override
+    protected Label getLabel() { 
+        return Label.NEGATIVE; 
     }
 }
